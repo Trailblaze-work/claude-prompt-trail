@@ -2,8 +2,8 @@ name: E2E Scheduled (detect Claude Code breaking changes)
 
 on:
   schedule:
-    # Every 4 hours
-    - cron: "0 */4 * * *"
+    # Once per day at 06:00 UTC
+    - cron: "0 6 * * *"
   workflow_dispatch: # Allow manual trigger
 
 jobs:
