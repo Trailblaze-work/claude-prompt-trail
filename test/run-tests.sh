@@ -1918,6 +1918,7 @@ claude_commit() {
     for attempt in 1 2; do
         CLAUDE_OUTPUT=$(claude -p \
             "Create a file called ${filename} containing 'test content' and commit it with message '${msg}'. Do not push." \
+            --model haiku \
             --dangerously-skip-permissions \
             "$@" \
             2>&1) || true
@@ -2144,6 +2145,7 @@ test_e2e_plugin_dir_flag() {
 
     CLAUDE_OUTPUT=$(claude -p \
         "Create a file called plugdir.txt containing 'plugin-dir test' and commit it with message 'Add plugdir.txt'. Do not push." \
+        --model haiku \
         --plugin-dir "$PROJECT_DIR" \
         --permission-mode acceptEdits \
         --allowedTools 'Bash(git:*)' 'Bash(echo:*)' 'Write' \
@@ -2174,6 +2176,7 @@ test_e2e_multiple_commits_distinct_notes() {
     # Ask Claude to create two files and make two separate commits
     CLAUDE_OUTPUT=$(claude -p \
         "Do these two steps in order: (1) Create file first.txt containing 'first' and commit with message 'Add first.txt'. (2) Create file second.txt containing 'second' and commit with message 'Add second.txt'. Do not push." \
+        --model haiku \
         --plugin-dir "$PROJECT_DIR" \
         --permission-mode acceptEdits \
         --allowedTools 'Bash(git:*)' 'Bash(echo:*)' 'Write' \
@@ -2209,7 +2212,7 @@ test_e2e_session_start_configures_git() {
 
     # Don't run setup-notes.sh manually — let the SessionStart hook do it
     # Run a trivial Claude session that triggers SessionStart
-    claude -p "Say hello" --plugin-dir "$PROJECT_DIR" --permission-mode acceptEdits --allowedTools 'Bash(echo *)' >/dev/null 2>&1 || true
+    claude -p "Say hello" --model haiku --plugin-dir "$PROJECT_DIR" --permission-mode acceptEdits --allowedTools 'Bash(echo *)' >/dev/null 2>&1 || true
 
     local display_ref
     display_ref=$(git config --local --get notes.displayRef 2>/dev/null || echo "")
